@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
   <!-- Start Screen -->
@@ -156,120 +157,246 @@
     <button type="button" onclick="goToStart()">GO TO LOGIN PAGE</button>
   </section>
 
-  <!-- Student Dashboard -->
-  <!-- Student Home -->
-  <section id="studentHome" class="page hidden" style="margin: 0 !important; padding: 0 !important; text-align: left !important; width: 100vw; height: 100vh; overflow: hidden !important">
-    <div style="display: flex; width: 100%; height: 100%; font-family: Poppins; box-sizing: border-box; margin: 0; padding: 0; text-align: left;">
-      
-      <!-- Sidebar -->
-      <aside style="width: 25%; height: 100%; background-color: #efefef; display: flex; flex-direction: column; align-items: flex-start; padding: 60px 40px; box-sizing: border-box; text-align: left; ">
+  <!-- STUDENT HOME -->
+  <section id="studentHome" class="page hidden dashboard-page">
+      <div class="dashboard-container">
+
+        <aside class="sidebar">
+          <div class="profile-icon">
+            <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+
+          <nav class="sidebar-nav">
+            <button onclick="showPage('studentHome'); loadEvents();" class="sidebar-btn">HOME</button>
+            <button onclick="showPage('studentHistory')" class="sidebar-btn">HISTORY</button>
+            <button onclick="showPage('start')" class="sidebar-btn">LOG OUT</button>
+          </nav>
+        </aside>
+
+        <main class="main-content">
+          <h2>AVAILABLE EVENTS</h2>
+          <div class="event-list" id="studentEventList"></div>
+        </main>
+      </div>
+    </section>
+
+    <section id="studentEventFormPage" class="page hidden dashboard-page">
+      <div class="dashboard-container">
         
-        <!-- Profile Icon -->
-        <div style="margin-bottom: 50px; margin-left: 10px; display: flex; align-items: center; justify-content: center; width: 75px; height: 75px; background-color: #000000; border-radius: 50%; box-sizing: border-box;">
-          <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <aside class="sidebar">
+          <div class="profile-icon">
+            <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <nav class="sidebar-nav">
+            <button onclick="showPage('studentHome'); loadEvents();" class="sidebar-btn">HOME</button>
+            <button onclick="showPage('studentHistory')" class="sidebar-btn">HISTORY</button>
+            <button onclick="showPage('start')" class="sidebar-btn">LOG OUT</button>
+          </nav>
+        </aside>
+
+        <main class="main-content">
+          <button onclick="showPage('studentHome')" class="custom-btn" style="width: auto; padding: 5px 15px; margin-bottom: 20px;">⬅️ BACK TO EVENTS</button>
+          
+          <h2 id="currentEventTitle">EVENT TITLE HERE</h2>
+          <p id="currentEventTime"><strong>Time Limit:</strong> Loading...</p>
+          <hr>
+
+          <form id="dynamicStudentForm" onsubmit="event.preventDefault(); submitStudentResponse(event); return false;">
+            <div id="questionsContainer"></div>
+            <br>
+            <button type="submit" class="custom-btn">SUBMIT AND GENERATE QR</button>
+          </form>
+
+          <div id="qrResultContainer" class="hidden" style="text-align: center; margin-top: 20px; padding: 20px; border: 1px dashed #ccc; background: #f9f9f9;">
+            <h3 style="color: green;">🎉 REGISTRATION SUCCESSFUL!</h3>
+            <p>Please screenshot or save your Unique QR Code below. Present this to the event scanner.</p>
+            <br>
+            <div id="qrcodeCanvas" style="display: flex; justify-content: center; margin: 10px 0;"></div>
+          </div>
+        </main>
+      </div>
+    </section>
+
+    <section id="studentHistory" class="page hidden dashboard-page">
+      <div class="dashboard-container">
+        
+        <aside class="sidebar">
+          <div class="profile-icon">
+            <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <nav class="sidebar-nav">
+            <button onclick="showPage('studentHome'); loadEvents();" class="sidebar-btn">HOME</button>
+            <button onclick="showPage('studentHistory')" class="sidebar-btn">HISTORY</button>
+            <button onclick="showPage('start')" class="sidebar-btn">LOG OUT</button>
+          </nav>
+        </aside>
+
+        <main class="main-content">
+          <h2>EVENT HISTORY</h2>
+          <p>List of events you have attended will be displayed here.</p>
+        </main>
+      </div>
+    </section>
+
+
+
+
+
+  <!-- ADMIN HOME -->
+  <section id="adminHome" class="page hidden dashboard-page">
+
+    <div class="dashboard-container">
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+
+        <div class="profile-icon">
+          <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
         </div>
 
-        <!-- Sidebar Navigation Buttons -->
-        <nav style="display: flex; flex-direction: column; gap: 25px; margin-left: 10px; text-align: left;">
-          <style>
-            .sidebar-btn {
-              background: none; 
-              border: none; 
-              font-size: 32px; 
-              font-weight: bold; 
-              cursor: pointer; 
-              color: #000000; 
-              padding: 8px 16px; 
-              text-align: left; 
-              letter-spacing: 1px;
-              border-radius: 8px;
-              width: fit-content;
-              transition: background-color 0.2s ease, color 0.2s ease;
-            }
-            .sidebar-btn:hover {
-              background-color: #d0d0d0 !important;
-            }
-          </style>
-
-          <button onclick="showPage('studentHome')" class="sidebar-btn">HOME</button>
-          <button onclick="showPage('studentHistory')" class="sidebar-btn">HISTORY</button>
+        <nav class="sidebar-nav">
+          <button onclick="showPage('adminHome'); loadEvents();" class="sidebar-btn">HOME</button>
+          <button onclick="showPage('createEvent')" class="sidebar-btn">CREATE EVENT</button>
+          <button onclick="showPage('adminScanner')" class="sidebar-btn">SCANNER</button>
           <button onclick="showPage('start')" class="sidebar-btn">LOG OUT</button>
         </nav>
+
       </aside>
 
-      <!-- Main Content Area -->
-      <main style="width: 75%; height: 100%; background-color: #ffffff; display: flex; flex-direction: column; padding: 40px; box-sizing: border-box; text-align: left; justify-content: space-between; overflow-y: auto;">
-        
-        <div style="display: flex; flex-direction: column; gap: 20px; text-align: left;">
-          
-          <!-- Event 1 -->
-          <div style="background-color: #dbdbdb; border-radius: 25px; padding: 20px 30px; box-sizing: border-box; text-align: left;">
-            <div style="font-size: 22px; font-weight: bold; color: #000; background-color: #adadad; display: inline-block; padding: 2px 15px; border-radius: 12px; margin: 0 0 10px 0; text-align: left;">EVENT TITLE 1</div>
-            <p style="margin: 0; font-size: 14px; line-height: 1.3; color: #000; font-weight: bold; text-align: left;">DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT.</p>
-          </div>
-          
-          <!-- Event 2 -->
-          <div style="background-color: #dbdbdb; border-radius: 25px; padding: 20px 30px; box-sizing: border-box; text-align: left;">
-            <div style="font-size: 22px; font-weight: bold; color: #000; background-color: #adadad; display: inline-block; padding: 2px 15px; border-radius: 12px; margin: 0 0 10px 0; text-align: left;">EVENT TITLE 2</div>
-            <p style="margin: 0; font-size: 14px; line-height: 1.3; color: #000; font-weight: bold; text-align: left;">DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT.</p>
-          </div>
-          
-          <!-- Event 3 -->
-          <div style="background-color: #dbdbdb; border-radius: 25px; padding: 20px 30px; box-sizing: border-box; text-align: left;">
-            <div style="font-size: 22px; font-weight: bold; color: #000; background-color: #adadad; display: inline-block; padding: 2px 15px; border-radius: 12px; margin: 0 0 10px 0; text-align: left;">EVENT TITLE 3</div>
-            <p style="margin: 0; font-size: 14px; line-height: 1.3; color: #000; font-weight: bold; text-align: left;">DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT.</p>
-          </div>
-
-          <!-- Event 4 -->
-          <div style="background-color: #dbdbdb; border-radius: 25px; padding: 20px 30px; box-sizing: border-box; text-align: left;">
-            <div style="font-size: 22px; font-weight: bold; color: #000; background-color: #adadad; display: inline-block; padding: 2px 15px; border-radius: 12px; margin: 0 0 10px 0; text-align: left;">EVENT TITLE 4</div>
-            <p style="margin: 0; font-size: 14px; line-height: 1.3; color: #000; font-weight: bold; text-align: left;">DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT.</p>
-          </div>
-
-          <!-- Event 5 -->
-          <div style="background-color: #dbdbdb; border-radius: 25px; padding: 20px 30px; box-sizing: border-box; text-align: left;">
-            <div style="font-size: 22px; font-weight: bold; color: #000; background-color: #adadad; display: inline-block; padding: 2px 15px; border-radius: 12px; margin: 0 0 10px 0; text-align: left;">EVENT TITLE 5</div>
-            <p style="margin: 0; font-size: 14px; line-height: 1.3; color: #000; font-weight: bold; text-align: left;">DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT.</p>
-          </div>
-
-          <!-- Event 6 -->
-          <div style="background-color: #dbdbdb; border-radius: 25px; padding: 20px 30px; box-sizing: border-box; text-align: left;">
-            <div style="font-size: 22px; font-weight: bold; color: #000; background-color: #adadad; display: inline-block; padding: 2px 15px; border-radius: 12px; margin: 0 0 10px 0; text-align: left;">EVENT TITLE 6</div>
-            <p style="margin: 0; font-size: 14px; line-height: 1.3; color: #000; font-weight: bold; text-align: left;">DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT.</p>
-          </div>
-
-          <!-- Event 7 -->
-          <div style="background-color: #dbdbdb; border-radius: 25px; padding: 20px 30px; box-sizing: border-box; text-align: left;">
-            <div style="font-size: 22px; font-weight: bold; color: #000; background-color: #adadad; display: inline-block; padding: 2px 15px; border-radius: 12px; margin: 0 0 10px 0; text-align: left;">EVENT TITLE 7</div>
-            <p style="margin: 0; font-size: 14px; line-height: 1.3; color: #000; font-weight: bold; text-align: left;">DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT. DESCRIPTION OF THE EVENT.</p>
-          </div>
-          
-        </div>
+      <main class="main-content">
+        <div class="adminEventList"></div>
       </main>
     </div>
   </section>
 
-  <!-- Other pages Student -->
-  <section id="studentHistory" class="page hidden"><h2>HISTORY</h2></section>
+  <!-- Other pages Admin -->
+  <section id="createEvent" class="page hidden dashboard-page">
 
-  <!-- Admin Dashboard -->
-  <section id="adminHome" class="page hidden">
-    <h2>ADMIN DASHBOARD</h2>
-    <div class="button-row">
-      <button onclick="showPage('start')">HOME</button>
-      <button onclick="showPage('createEvent')">CREATE AN EVENT</button>
-      <button onclick="showPage('adminScanner')">SCANNER</button>
-      <button onclick="showPage('start')">LOG OUT</button>
+    <div class="dashboard-container">
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+
+        <div class="profile-icon">
+          <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button onclick="showPage('adminHome')" class="sidebar-btn">HOME</button>
+          <button onclick="showPage('createEvent')" class="sidebar-btn">CREATE EVENT</button>
+          <button onclick="showPage('adminScanner')" class="sidebar-btn">SCANNER</button>
+          <button onclick="showPage('start')" class="sidebar-btn">LOG OUT</button>
+        </nav>
+
+      </aside>
+
+      <!-- Main Content // Create an Event Page-->
+      <main class="main-content">
+
+        <h2>CREATE AN EVENT</h2>
+
+        <form id="eventForm" onsubmit="event.preventDefault(); submitEvent(event); return false;">
+
+          <label>EVENT TITLE</label>
+          <input type="text" id="title" placeholder="Enter event title">
+
+          <label>DESCRIPTION</label>
+          <input type="text" id="description" placeholder="Event description">
+
+          <div class="time-boxes">
+            <div class="time-box">
+              <label for="startTime">START TIME:</label>
+              <input type="time" id="startTime" placeholder="Start Time">
+            </div>
+
+            <div class="time-box">
+              <label for="endTime">END TIME:</label>
+              <input type="time" id="endTime" placeholder="End Time">
+            </div>
+          </div>
+        </form>
+
+          <div id="defaultQuestions">
+            <br><label>DEFAULT BASE TEMPLATE</label><br><hr>
+            <label>NAME</label><br>
+            <label>STUDENT NUMBER</label><br>
+            <label>BLOCK</label><br>
+            <label>DEPARTMENT</label><br>
+            <label>COURSE</label><br><hr> 
+            <br>
+          </div>
+
+          <button type="button" class="custom-btn" onclick="addQuestion()">+ ADD CUSTOM QUESTION</button>
+          
+          <div><hr></div>
+          
+          <div id="questionContainer"></div>
+          <button type="button" class="custom-btn" onclick="showFinalPreview()">DONE</button>
+
+          <div><hr></div>
+
+          <div id="finalPreview" style="display: none;">
+            <div class="event-preview" class="page hidden">
+              <h2 id="preview-title" class="page hidden">EVENT TITLE</h2>
+              <p id="preview-description" class="page hidden">EVENT DESCRIPTION</p>
+              <p id="preview-time" class="page hidden"><strong>TIME LIMIT</strong></p>
+            </div>
+          </div>
+      
+          <button type="button" class="custom-btn" onclick="submitEvent(event)">CREATE EVENT</button>
+      </main>
     </div>
   </section>
 
-  <!-- Other pages Admin -->
-  <section id="adminHome" class="page hidden"><h2>HOME</h2></section>
-  <section id="createEvent" class="page hidden"><h2>CREATE AN EVENT</h2></section>
-  <section id="adminScanner" class="page hidden"><h2>ADMIN SCANNER/h2></section>
+<!--Scanner Here-->
+  <section id="adminScanner" class="dashboard-page hidden">
+    <div class="dashboard-container"> 
+
+      <aside class="sidebar">
+        <div class="profile-icon">
+          <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button onclick="showPage('adminHome')" class="sidebar-btn">HOME</button>
+          <button onclick="showPage('createEvent')" class="sidebar-btn">CREATE EVENT</button>
+          <button onclick="showPage('adminScanner')" class="sidebar-btn">SCANNER</button>
+          <button onclick="showPage('start')" class="sidebar-btn">LOG OUT</button>
+        </nav>
+
+      </aside>
+
+      <main class="main-content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 60px;">
+        <h2 class="dashboard-title" style="text-align: center; margin-bottom: 20px;">ADMIN SCANNER</h2>
+
+        <div id="qr-reader" style="width: 100%; max-width: 500px; margin: 20px auto; background: #f0f0f0; border-radius: 12px; overflow: hidden;"></div>
+          
+        <div id="qr-reader-results" style="text-align: center; font-size: 18px; font-weight: bold; margin-top: 15px; color: #333;"></div>
+
+        <div class="button-row" style="margin-top: 20px; text-align: center;">
+        <button onclick="stopScannerAndGoBack()">BACK TO DASHBOARD</button>
+        </div>
+      </main>
+    </div>
+  </section>
 
   <script src="script.js"></script>
 </body>

@@ -3,10 +3,12 @@ from sqlalchemy.orm import Session
 
 from app.db.database import SessionLocal
 from app.models.user import User
+from app.models.event import Event
 from app.schemas.user import UserCreate, UserLogin
+from app.schemas.event import EventCreate
 from app.core.security import hash_password, verify_password, create_token
 
-router = APIRouter()
+router = APIRouter(prefix="/auth", tags=["auth"])
 
 def get_db():
     db = SessionLocal()
@@ -52,5 +54,6 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
 
     return {
         "access_token": token,
-        "token_type": "bearer"
+        "token_type": "bearer",
+        "role": db_user.role
     }
