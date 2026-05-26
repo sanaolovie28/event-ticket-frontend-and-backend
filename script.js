@@ -231,7 +231,7 @@ function startQRScanner() {
     if (!html5QrcodeScanner) {
         qrReaderEl.innerHTML = `
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px; width: 100%; box-sizing: border-box;">
-                <p style="font-weight: bold; margin-bottom: 20px; color: #555;">Camera Scanner Ready</p>
+                <p style="font-weight: bold; margin-bottom: 20px; color: #555;">CAMERA SCANNER READY</p>
                 <button id="triggerScanBtn" style="background: black; color: white; padding: 12px 30px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin: 0 auto; display: block;">START SCANNING</button>
             </div>
         `;
